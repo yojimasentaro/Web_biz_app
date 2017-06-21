@@ -1,0 +1,210 @@
+# 下記の各問に解答しなさい
+# インポート
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import mglearn
+from IPython.display import display
+from sklearn.datasets import load_files
+%matplotlib inline
+
+# 映画レビューのテキストファイル集合を読み込む
+#reviews = load_files("data/IMDb/")
+reviews = load_files("/root/userspace/webeng20170607/data/IMDb/")
+review_text, review_label = reviews.data, reviews.target
+
+#----------------------------------------------------------------
+# Q1 : 辞書構築し中身を確認する
+#----------------------------------------------------------------
+#  映画レビューデータセットの文書集合について、少なくとも3つ以上の文書に出現する単語を用いて辞書を構築する。
+#  辞書構築の際は、英語のストップワードリストを用いる。
+
+from sklearn.feature_extraction.text import CountVectorizer
+review_vect = CountVectorizer(min_df=3, stop_words="english").fit(review_text)
+review_bow = review_vect.transform(review_text)
+
+print("bag_of_words with df as 3 and stop words: ")
+# Q1- Answer : 辞書の中身を確認 
+print(format(repr(review_bow)))
+
+
+#----------------------------------------------------------------
+# Q2 : tfidfベクトルの作成 し -> tf-idf BoW表現を構築 
+#----------------------------------------------------------------
+#  文書の長さがベクトル表現に影響しないようにするため、tfidfをL2正則化により、それぞれ文書表現の長さが1になるようにする。
+#  正則化は、TfidfVectorizerの"norm"パラメータに指定します。L2正則化の場合、パラメータ値は"l2"となります。
+#  テキストのBoW表現を構築（SciPyの疎行列として格納） TfidfTransformerでCountVectorizerの疎行列を変換してもよい。
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+review_vect_tfidf =  TfidfVectorizer(min_df=3, stop_words="english").fit(review_text)
+review_bow_tfidf = review_vect_tfidf.transform(review_text)
+
+print("tf-idf bag_of_words with df as 3 and stop words: ")
+# Q2 - Answer: テキストのtf-idf BoW表現を出力
+print(format(repr(review_bow_tfidf)))
+
+
+#----------------------------------------------------------------
+# Q3 : tfidfベクトルを用いて、tfidfの高い語、tfidfの低い語、idfの低い語 各10件確認する
+#----------------------------------------------------------------
+
+
+review_vect_tfidf =  TfidfVectorizer(min_df=2, stop_words="english").fit(review_text)
+review_bow_tfidf = review_vect_tfidf.transform(review_text)
+feature_names = np.array(review_vect_tfidf.get_feature_names())
+max_value = review_bow_tfidf .max(axis=0).toarray().ravel()
+sorted_by_tfidf = max_value.argsort()
+sorted_by_idf = np.argsort(review_vect_tfidf.idf_)
+
+# Q3- Answer1: tfidfの低い語を確認
+print("Features with lowest tfidf:")
+print(format(feature_names[sorted_by_tfidf[:10]]))
+
+# Q3- Answer2: tfidfの高い語を確認
+print("Features with highest tfidf:")
+print(format(feature_names[sorted_by_tfidf[-10:]]))
+
+# Q3- Answer3: idfの低い（dfの高い）語を確認
+print("Features with lowest idf:")
+print(format(feature_names[sorted_by_idf[:10]]))
+#----------------------------------------------------------------
+
+
+# Q4 バイグラム(2-gram)を用いて、上記と同じ条件で各文書のtfidfベクトルを、各10件確認する
+# ----------------------------------------------------------------
+# ユニグラムではなくバイグラム(2-gram)を用いて、上記と同じ条件で各文書のtfidfベクトルを作成する。
+
+review_vect_tfidf =  TfidfVectorizer(min_df=2, stop_words="english",ngram_range=(2,2)).fit(review_text)
+review_bow_tfidf = review_vect_tfidf.transform(review_text)
+
+
+
+# Q4- Answer1: tfidfの低い語を確認
+print("2-gram : Features with lowest tfidf:")
+print(format(feature_names[sorted_by_tfidf[:30]]))
+
+# Q4- Answer2: tfidfの高い語を確認
+print("2-gram : Features with highest tfidf:")
+print(format(feature_names[sorted_by_tfidf[-30:]]))
+
+# Q4- Answer3: idfの低い（dfの高い）語を確認
+print("2-gram : Features with lowest idf:")
+print(format(feature_names[sorted_by_idf[:50]]))
+
+
+
+# Q5: cosine類似度に基づいて、5番目のレビューに最も類似した上位5文書の内容と類似度を表示するプログラムを作成
+# ----------------------------------------------------------------
+# 上記の条件で作成したユニグラムのtfidfベクトルを用いる。
+# cosine類似度に基づいて任意の文書に最も類似した上位5文書の内容と類似度を表示するプログラムを作成する。
+
+from sklearn.metrics.pairwise import cosine_similarity
+vect_tfidf =  TfidfVectorizer(min_df=5, stop_words="english").fit(review_text)
+bow_tfidf = vect_tfidf.transform(review_text)
+
+cos_sim = cosine_similarity(bow_tfidf[0:5], bow_tfidf).flatten()
+top10_sim_docs = cos_sim.argsort()[:-10:-1]
+
+# Q5 - Answer: ５番目のレビュー と 最も類似しているtop5のレビューの 文章と類似度を出力
+# for 文で出力
+print("The content of text in nth :")
+print(format(top10_sim_docs))
+print("cosine similarities :")
+print(format(cos_sim[top10_sim_docs]))
+
+
+# Q6: トピックモデルのトピック数を変えて実行し、抽出される違いを確認する。 
+# ----------------------------------------------------------------
+# トピック数 20個の場合と 10個の場合で比較
+
+from sklearn.decomposition import LatentDirichletAllocation
+
+vect = CountVectorizer(min_df=2, stop_words="english").fit(review_text)
+bow = vect.transform(review_text)
+lda = LatentDirichletAllocation(n_topics=20, learning_method="batch",max_iter=25, random_state=0)
+doc_topics = lda.fit_transform(bow)
+sorting = np.argsort(lda.components_, axis=1)[:, ::-1]
+feature_names = np.array(vect.get_feature_names())
+
+# Q6 -Answer1 : トピック数を20としたLDAの実行
+print("topics, words: ")
+mglearn.tools.print_topics(topics=range(20), feature_names=feature_names,
+                        sorting=sorting, topics_per_chunk=5, n_words=10)
+
+# Q6 -Answer2 : トピック数を10としたLDAの実行
+print("topics, words:")
+mglearn.tools.print_topics(topics=range(10), feature_names=feature_names,
+                        sorting=sorting, topics_per_chunk=5, n_words=10)
+
+
+# Q7.  日本語形態素解析を行う
+# ----------------------------------------------------------------
+# Q7-1 : 入力文データを変えてMecabを実行し、形態素解析の結果を確認する
+# Q7-2 : スクレピングで取得したyahoo Newsの記事から、名詞を抽出して出力するプログラムを作成する
+
+import MeCab
+
+#MeCabによる形態素解析
+class jp_pos_tagger:
+
+    def __init__(self, dictionary="mecabrc"):
+        self.dictionary = dictionary
+        self.tagger = MeCab.Tagger(self.dictionary)
+    
+    def mecab_tagger_noun(self, text):
+        if not text:
+            return []
+        words = []
+        node = self.tagger.parseToNode(text)
+        while node:
+            features = node.feature.split(',')
+            #名詞のみ抽出
+            if features[0] in ["名詞"]:
+                if features[6] == "*":
+                    words.append(node.surface)
+                else:                    
+                    words.append(features[6])
+            node = node.next
+        return words
+    
+# Q7- Answer1 :入力文データを変えてMecabを実行し、形態素解析の結果を確認する
+# 処理を記入
+if __name__ == '__main__':
+    jp_text_data = [
+        '人工知能とは、コンピュータを使って、学習・推論・判断など人間の知能のはたらきを人工的に実現したもの',
+        'ウェブとは、インターネット上で提供されるハイパーテキストシステム',
+        '機械学習とは、人間が自然に行っている学習能力と同様の機能をコンピュータで実現しようとする技術・手法のこと'
+    ]
+    pos = jp_pos_tagger()
+    pos_vect = CountVectorizer(analyzer=pos.mecab_tagger_noun)
+    pos_vect.fit(jp_text_data)
+    print("Vocabulary size: ")
+    print(format(len(pos_vect.vocabulary_)))
+    print("Vocabulary content:")
+    print(format(pos_vect.vocabulary_))
+
+# Q7- Answer2 : スクレピングで取得したyahoo Newsの記事から、名詞を抽出して出力するプログラムを作成する
+from bs4 import BeautifulSoup
+import urllib.request as req
+import re
+
+url = "https://news.yahoo.co.jp/list"
+# 処理を記入
+res = req.urlopen(url)
+soup = BeautifulSoup(res, "html.parser")
+topics = soup.find_all(href=re.compile("^https://news.yahoo.co.jp/pickup"))
+for topic in topics[:5]:
+    res = req.urlopen(topic.attrs['href'])
+    soup = BeautifulSoup(res, "html.parser")
+    news = soup.select_one("p.hbody")
+    print("article :")
+    print(news)
+    print("\n")
+    pos = jp_pos_tagger()
+    pos_vect = CountVectorizer(analyzer=pos.mecab_tagger_noun)
+    pos_vect.fit(news)
+    #print("Vocabulary size: ")
+    #print(format(len(pos_vect.vocabulary_)))
+    #print("Vocabulary content:")
+    print("extracted nouns :")
+    print(format(pos_vect.vocabulary_))
