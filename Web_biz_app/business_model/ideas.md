@@ -1,9 +1,8 @@
 # Please write your ideas in itemized form or etc
 
-* マッチング料を取る
-* 広告料
-* 写真家から、投稿する作品数によって投資をしてもらう(実績が必要）
-* プラス機能(場所や日時のセッティング、写真の現像orデータ化、アルバム)
+* matching fee
+* ads fee
+* additional options(set date and place, make albums)
 
-現在成人式などの写真は専門の店で非常に高額を払っている。このSNSで狙うのはその層。
-カメラの性能は一般の写真家が持っているレベルでもかなり高いため、需要と供給をマッチングできれば有用性は高い
+people pay a lot of money to photo shop. we aim such people to use this SNS.
+people can get photos with cheaper money and (amateur) photographers have opportunity to earn money.
