@@ -7,7 +7,7 @@
 ```ruby:user.rb
 def self.search(keyword, region, etc..)
   #入力がある場合とない場合で分ける
-  if word
+  if keyword
     #入力文字列を空白で区切ってand検索
     patterns = word.split(/[ , ]/)
     sql_body = ''
