@@ -1,0 +1,38 @@
+.container.proto-new
+  = form_for @photo do |f|
+    .col-md-8.col-md-offset-2
+      %header.row.user-nav.row
+        .col-md-12
+          = f.text_field :title, class: "proto-new-title", placeholder: "Title"
+      .row
+        .col-md-12
+          .cover-image-upload.js-preview-images
+            = f.fields_for :photo_images, @main_content do |photo_image|
+              = photo_image.file_field :content
+              = photo_image.hidden_field :role, value: :main
+        .col-md-12
+          %ul.proto-sub-list.list-group
+            = f.fields_for :photo_images, @sub_contents do |photo_image|
+              %li.list-group-item.col-md-4
+                .image-upload.js-preview-images
+                  = photo_image.file_field :content
+                  = photo_image.hidden_field :role, value: :sub
+            %li.list-group-item.col-md-4
+              .image-upload-plus
+                %span +
+      .row.proto-description
+        .col-md-12
+          = f.text_field :catch_copy, placeholder: "Catch Copy"
+        .col-md-12
+          = f.text_area :concept, cols:"30", rows: "4", placeholder: "Concept"
+        .col-md-12
+          %h4 Tag List
+          .row
+            .col-md-3
+              = text_field_tag "photo[tag][]", "", placeholder: "Web Design",maxlength: 9
+            .col-md-3
+              = text_field_tag "photo[tag][]", "", placeholder: "UI",maxlength: 9
+            .col-md-3
+              = text_field_tag "photo[tag][]", "", placeholder: "Application",maxlength: 9
+      .row.text-center.proto-btn
+        = f.submit "Publish", class: "btn btn-lg btn-primary btn-block"
