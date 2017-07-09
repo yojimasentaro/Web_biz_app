@@ -1,51 +1,75 @@
 # web_en
 - 検索機能の実装案, Userの検索の例. 他のモデルでも応用可. 
 
+# 実装中のDBに対応したバージョン, 前のは色々おかしかったので削除
+
 ### モデル側
-- searchメソッドとしてUser.rbに定義
 
 ```ruby:user.rb
-def self.search(keyword, region, etc..)
-  #入力がある場合とない場合で分ける
-  if keyword
-    #入力文字列を空白で区切ってand検索
-    patterns = word.split(/[ , ]/)
-    sql_body = ''
+class User < ApplicationRecord
+  def self.search(name, profile)
+    user_ids = [] # 検索でヒットしたユーザーのidを格納する配列
     
-    #SQL文を作成する, 【column】のところには検索対象のカラムを入れる
-    patterns.each do |pattern|
-      sql_body += ' and ' unless sql_body.blank
-      sqlbody += "【column】 like '%#{pattern}%' "
-    end    
-    sql = "select * from users where #{sql_body} order by id desc"
+    #入力がある場合とない場合で分ける
+    if name.presence
+    #入力文字列を空白で区切ってリストに格納
+      patterns = name.split(/[ , ]/)
+      sql_body = ''
     
-    #SQL文で条件を満たすユーザーを取得
-    users = User.find_by_sql(sql)
-  else
-    #入力がない場合（検索を使ってない場合）
-    User.all
-  end
-  #同様の処理を残りの引数に関しても行う。省略。
- end
+      #SQL文を作成する
+      patterns.each do |pattern|
+        sql_body += ' and ' unless sql_body.blank?
+        sql_body += "name like '%#{pattern}%' "
+      end
+      sql = "select * from users where #{sql_body} order by id desc"
+    
+    #find_by_sqlで条件を満たすユーザーを取得し、それらのidを取得する
+      user_ids << User.find_by_sql(sql).map(&:id)
+    end
+  
+  # profileについても同様の処理を行う
+  
+    if profile.presence
+      #入力文字列を空白で区切ってリストに格納
+      patterns = profile.split(/[ , ]/)
+      sql_body = ''
+  
+      #SQL文を作成する
+      patterns.each do |pattern|
+        sql_body += ' and ' unless sql_body.blank?
+        sql_body += "profile like '%#{pattern}%' "
+      end
+      sql = "select * from users where #{sql_body} order by id desc"
+  
+      # find_by_sqlで条件を満たすユーザーを取得し、それらのidをusers_idsに追加する
+      user_ids << User.find_by_sql(sql).map(&:id)
+    end
+
+    # 入力がなかった場合と検索対象がゼロだった場合は全てのユーザーを返す, それ以外の場合はヒットしたユーザーを返す
+    if name.presence or profile.presence
+      user_ids.flatten!
+      where(:id => user_ids)
+    else
+      User.all
+    end
+  end  
+end
+
  ```
 
-### ビュー側
-- indexページ以外でもいい. erbです.
-- コントローラに :keyword, :region （仮）などの、検索対象のカラムに対応したパラメータを渡す
-- 下の例はキーワード検索のみ
 
+### ビュー側
 ```ruby:index.html.erb
 <%= form_tag users_path, method: "get" do %>
-   <%= search_field_tag :keyword, nil %>
-   <%= submit_tag("submit") %>
- <% end %>
+  <%= search_field_tag :username %>
+  <%= search_field_tag :profile %>
+  <%= submit_tag("submit") %>
+<% end %
 ```
 
 ### コントローラー側
-
 ```ruby:index.html.erb
 def index
-  @videos = Video.search(params[:keyword])
+  @users = User.search(params[:username], params[:profile])
 end
 ```
-
