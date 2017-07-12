@@ -1,0 +1,3 @@
+$("#comment_content").val("");
+$("#js-comments-counter").text("(#{ @photo.comments.count })");
+$("#js-comments").html("#{ j(render partial: 'comment', collection: @comments) }");
