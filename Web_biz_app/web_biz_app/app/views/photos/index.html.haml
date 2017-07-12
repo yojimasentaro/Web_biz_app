@@ -1,11 +1,11 @@
 = render partial: "layouts/top_content"
-/ .container.proto-list
-/   .row
-/     = render partial: "photos/photo", collection: @photos
+.container.proto-list
+  .row
+    = render partial: "photos/photo", collection: @photos
 
-/ .text-center
-/   %ul.pagination
-/     %li.disabled
-/       = paginate(@photos)
+.text-center
+  %ul.pagination
+    %li.disabled
+      = paginate(@photos)
 
 

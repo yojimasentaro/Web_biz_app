@@ -8,7 +8,7 @@
         %h4#top-aligned-media.media-heading
           = @user.username
           %span.label.label-default.project-number
-            = @user.prototypes.length
+            = @user.photos.length
             %i Projects
         .proto-user
           %span.degree
@@ -24,7 +24,7 @@
               = @user.works
 .container.proto-list
   .row
-    = render partial: "prototypes/prototype", collection: @user.prototypes
+    = render partial: "photos/photo", collection: @user.photos
 
 .text-center
   %ul.pagination
