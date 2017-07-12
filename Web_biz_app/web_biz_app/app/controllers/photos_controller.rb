@@ -1,6 +1,6 @@
 class PhotosController < ApplicationController
 
-  before_action :set_prototype, only: [:show, :edit, :update, :destroy]
+  before_action :set_photo, only: [:show, :edit, :update, :destroy]
 
   def index
     @photos = Photo.order("photos.created_at DESC").eager_load(:user, :photo_images).page(params[:page])
@@ -49,7 +49,7 @@ class PhotosController < ApplicationController
 
   private
 
-  def set_prototype
+  def set_photo
     @photo    = Photo.find(params[:id])
   end
 
