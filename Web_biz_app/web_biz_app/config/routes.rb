@@ -1,7 +1,13 @@
 Rails.application.routes.draw do
+  devise_for :users
   root 'photos#index'
-
-  get  '/photos/index'  =>    'photos#index'
-  get  '/photos/new'    =>    'photos#new'
-  get  '/photos/show'   =>    'photos#show'
+  resources  :users, only: [:show, :edit, :update]
+  resources  :tags, param: :name,  only: [:index, :show]
+  resources  :photos do
+    resources :likes,    only: [:create, :destroy]
+    resources :comments, only: [:create, :destroy]
+  end
+  scope module: :photos do
+    resources :popular, only: :index
+  end
 end

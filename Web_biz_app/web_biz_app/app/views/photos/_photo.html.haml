@@ -1,0 +1,21 @@
+.col-sm-4.col-md-3.proto-content
+  .thumbnail
+    = link_to photo_path(photo) do
+      = image_tag photo.photo_images.main.first.content
+    - if user_signed_in? && current_user.id == photo.user_id
+      .dropdown.drop_menu_location
+        %button.btn.btn-default.dropdown-toggle{ id: "dropdownMenu", type: "button",  data: { toggle: "dropdown" } } Action
+        %ul.dropdown-menu{ aria: { labelledby: "dropdownMenu1" } }
+          %li
+            = link_to "Delete", photo, method: :delete
+          %li
+            = link_to "Edit"  , edit_photo_path(photo)
+    .caption
+      %h3= photo.title
+      .proto-meta
+        .proto-user
+          = link_to "by #{ photo.user.username }", user_path(photo.user)
+        .proto-posted
+          = photo.created_at.strftime("%b %d")
+      %ul.proto-tag-list.list-inline
+        = render partial: "tags/button_template", collection: photo.tags, as: "tag"

@@ -1,0 +1,6 @@
+.container
+  .row
+    .tags-list
+      %h2 Tags List
+    %ul.proto-tag-list.list-inline
+      = render partial: "tag", collection: @tags, as: "tag"

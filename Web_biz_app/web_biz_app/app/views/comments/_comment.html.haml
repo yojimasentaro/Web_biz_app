@@ -1,0 +1,12 @@
+.media
+  .media-left
+    = link_to image_tag(comment.user.avatar, size: "64x64", class: "media-object", style: "width: 64px; height: 64px;" ), user_path(@photo.user)
+  .media-body
+    %h4#top-aligned-media.media-heading
+      = comment.user.username
+      - if comment.user_id == current_user.id
+        = link_to "Delete", photo_comment_path(comment, photo_id: comment.photo.id), method: :delete, class: "btn btn-xs navbar-inverse btn-delete", remote: true
+      %a.anchorjs-link{ href: "#top-aligned-media" }
+        %span.anchorjs-icon
+    %p
+    = comment.content
