@@ -77,7 +77,7 @@ end
 
 # Twitterのフォロワー取得関数, エラー処理無し
 
-'''
+```ruby:twitter-follower-getter.rb
 require "nokogiri"
 require "open-uri"
 
@@ -87,4 +87,4 @@ def follower_getter(id)
   follower = doc.xpath("//li[@class='ProfileNav-item ProfileNav-item--followers']/a/span[@class='ProfileNav-value']").attribute("data-count").value
   return follower
 end
-'''
+```
