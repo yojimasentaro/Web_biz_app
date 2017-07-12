@@ -73,3 +73,18 @@ def index
   @users = User.search(params[:username], params[:profile])
 end
 ```
+
+
+# Twitterのフォロワー取得関数, エラー処理無し
+
+'''
+require "nokogiri"
+require "open-uri"
+
+def follower_getter(id)
+  url = "https://twitter.com/#{id}"
+  doc = Nokogiri::HTML(open(url))
+  follower = doc.xpath("//li[@class='ProfileNav-item ProfileNav-item--followers']/a/span[@class='ProfileNav-value']").attribute("data-count").value
+  return follower
+end
+'''
