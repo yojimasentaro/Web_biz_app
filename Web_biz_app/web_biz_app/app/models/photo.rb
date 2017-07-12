@@ -12,7 +12,7 @@ class Photo < ApplicationRecord
 
   SUB_CONTENT_MAX = 2
   def set_sub_contents
-    sub_contents = photo.sub
+    sub_contents = photo_images.sub
     SUB_CONTENT_MAX.times { |i| sub_contents[i] ||= photo_images.build(role: "sub") }
     sub_contents
   end
