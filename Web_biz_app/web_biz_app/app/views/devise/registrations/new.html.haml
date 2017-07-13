@@ -24,6 +24,17 @@
           .user-user-profile.row
             .user-name.col-md-12
               = f.text_area :profile, placeholder: "Profile"
+          %h4 Photographer or model?
+          .user-user-member.row
+            .user-name.col-md-6
+              %label
+                = f.check_box :photographer_flg
+                %span.user-label
+                  Photographer
+              %label
+                = f.check_box :model_flg
+                %span.user-label
+                  Model
           %h4 Works
           .user-name_image.row
             .user-name.col-md-12
