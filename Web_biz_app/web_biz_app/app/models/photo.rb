@@ -35,7 +35,7 @@ class Photo < ApplicationRecord
       #SQL文を作成する
       patterns.each do |pattern|
         sql_body += ' and ' unless sql_body.blank?
-        sql_body += " title like '%#{pattern}%' "
+        sql_body += " concat(title, concept) like '%#{pattern}%' "
         tagged_photos.push(Photo.tagged_with(pattern)) # "pattern"というタグを持つPhotoのリストがpushされる
       end
       sql = "select * from photos where #{sql_body} order by id desc"
