@@ -11,7 +11,9 @@ class ApplicationController < ActionController::Base
         :member,
         :profile,
         :works,
-        :avatar
+        :avatar,
+        :photographer_flg,
+        :model_flg
         ])
 
       devise_parameter_sanitizer.permit(:account_update, keys: [
@@ -19,7 +21,9 @@ class ApplicationController < ActionController::Base
         :avatar,
         :member,
         :profile,
-        :works
+        :works,
+        :photographer_flg,
+        :model_flg
         ])
     end
 end
