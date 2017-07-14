@@ -22,7 +22,10 @@ class UsersController < ApplicationController
       :password,
       :profile,
       :member,
-      :works
+      :works,
+      :photographer_flg,
+      :model_flg,
+      :camera
       )
   end
 end

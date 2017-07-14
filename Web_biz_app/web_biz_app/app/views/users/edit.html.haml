@@ -11,7 +11,7 @@
               = f.button "Change image", class: "btn btn-primary"
               = f.file_field :avatar
           = f.email_field :email, placeholder: "E-mail", class: "user-email"
-          / = f.password_field :password, placeholder: "Password", class: "user-password"
+          -# = f.password_field :password, placeholder: "Password", class: "user-password"
       .col-md-12
         %h4 Member of
         .user-user-member.row
@@ -36,6 +36,10 @@
         .user-name_image.row
           .user-name.col-md-12
             = f.text_area :works, cols: "30", rows: "4", placeholder: "Works"
+        %h4 Camera
+        .user-name_image.row
+          .user-name.col-md-12
+            = f.text_area :camera, cols: "30", rows: "4", placeholder: "Using Camera"
     .row.text-center.user-btn
       = f.submit "Save", class: "btn btn-lg btn-primary btn-block"
       
