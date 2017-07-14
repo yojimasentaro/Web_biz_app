@@ -9,6 +9,13 @@
     .navbar-collapse.collapse.navbar-responsive-collapse
       - if user_signed_in?
         %ul.nav.navbar-nav.navbar-right
+          %li
+            = form_tag root_path, method: "get", class: "navbar-form" do
+              .input-group
+                = text_field_tag :keyword, nil, class: "form-control"
+                %span.input-group-btn
+                  = button_tag type: "submit", class: "btn btn-default", name: nil do
+                    = content_tag :span, "", class: "glyphicon glyphicon-camera"
           %li.dropdown
             %a.dropdown-toggle{ aria: { expanded: false }, data: { toggle: "dropdown" }, href: "#", role: "button" }
               = current_user.username

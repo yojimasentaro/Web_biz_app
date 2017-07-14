@@ -3,7 +3,7 @@ class PhotosController < ApplicationController
   before_action :set_photo, only: [:show, :edit, :update, :destroy]
 
   def index
-    @photos = Photo.order("photos.created_at DESC").eager_load(:user, :photo_images).page(params[:page])
+    @photos = Photo.search(params[:keyword]).order("photos.created_at DESC").eager_load(:user, :photo_images).page(params[:page])
     @status = 'newest'
   end
 
