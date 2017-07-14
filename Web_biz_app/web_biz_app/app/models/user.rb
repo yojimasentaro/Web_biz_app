@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_many  :comments
   has_many  :photos
   validates :username,      presence: true
-  validates :password,   length: { minimum: 8 }
+ # validates :password,   length: { minimum: 8 }
   validates :email,      presence: true, uniqueness: true, format: { with: VALID_EMAIL_REGEX }
   mount_uploader :avatar, AvatarUploader
 end
