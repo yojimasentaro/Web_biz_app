@@ -12,7 +12,7 @@ $(document).on('ready page:load', function(){
       fileReader.readAsDataURL(file);
       fileReader.onload = function(){
         preview.css({
-          'background-image': "url(' + fileReader.result + ')",
+          'background-image': 'url(' + fileReader.result + ')',
           'background-size' : 'cover'
         });
       };
