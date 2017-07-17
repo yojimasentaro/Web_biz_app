@@ -16,6 +16,9 @@
                 %span.input-group-btn
                   = button_tag type: "submit", class: "btn btn-default", name: nil do
                     = content_tag :span, "", class: "glyphicon glyphicon-camera"
+          %li
+            = link_to users_path do
+              %i.glyphicon.glyphicon-user
           %li.dropdown
             %a.dropdown-toggle{ aria: { expanded: false }, data: { toggle: "dropdown" }, href: "#", role: "button" }
               = current_user.username
