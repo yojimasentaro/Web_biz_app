@@ -17,3 +17,11 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "photos";
+
+a, a:link {
+  color: black;
+}
+
+a:visited {
+  color: gray;
+}
