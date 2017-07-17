@@ -1,0 +1,10 @@
+.container
+  = render partial: "users/user_search"
+  .user-list
+    .row
+      = render partial: "users/user"
+
+  .text-center
+    %ul.pagination
+      %li.disabled
+        = paginate(@users)
