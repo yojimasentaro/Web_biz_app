@@ -1,14 +1,15 @@
 .search-field
   = form_tag users_path, method: "get" do
-    .row
-      .form-inline
-        %label
-          キーワード：
-          = text_field_tag :keyword, nil, placeholder: "キーワードを入力"
-        %label
-          料金最大値：
-          .input-group
-            = text_field_tag :maxfare, nil, placeholder: "料金の最大値を入力"
-            %span.input-group-btn
-              = button_tag type: "submit", class: "btn btn-default btn-sm", name: nil do
-                = content_tag :span, "", class: "glyphicon glyphicon-search"
+    .form-inline
+      %label
+        キーワード：
+        = text_field_tag :keyword, nil, placeholder: "キーワードを入力"
+      %label
+        料金最大値：
+        .input-group
+          = text_field_tag :maxfare, nil, placeholder: "料金の最大値を入力"
+          %span.input-group-btn
+            = button_tag type: "submit", class: "btn btn-default btn-sm", name: nil do
+              = content_tag :span, "", class: "glyphicon glyphicon-search"
+
+              
