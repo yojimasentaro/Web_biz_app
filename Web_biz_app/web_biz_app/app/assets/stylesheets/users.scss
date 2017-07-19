@@ -1,3 +1,57 @@
 // Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+body {
+  font-family: "Lato", 'Helvetica Neue, Helvetica, Arial', sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.4;
+  color: #212121;
+
+  overflow-x: hidden;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -moz-font-feature-settings: "liga", "kern";
+}
+
+
+body {
+  padding-top: 92px;
+  background-color: #F7F7F7;
+}
+
+.user-list {
+  padding-top: 50px;
+}
+
+.media-object {
+  border-radius: 50%;
+}
+
+.user-box {
+  border: 1px solid #e6ecf0;
+  background: #fff;
+  padding: 15px;
+}
+
+.media-left, .media-right, .media-body {
+    display: table-cell;
+    vertical-align: top;
+}
+
+.media-left, .media > .pull-left {
+    padding-right: 10px;
+}
+
+p {
+  color: gray;
+}
+
+.search-field {
+  padding-top: 20px;
+  background: #fff;
+}

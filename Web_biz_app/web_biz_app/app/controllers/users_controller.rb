@@ -13,6 +13,10 @@ class UsersController < ApplicationController
     redirect_to root_path, notice: 'Updated Successfully!'
   end
 
+  def index
+    @users = User.search(params[:keyword], params[:maxfare]).order("users.created_at DESC").page(params[:page])
+  end
+  
   private
   def update_params
     params.require(:user).permit(
@@ -22,7 +26,10 @@ class UsersController < ApplicationController
       :password,
       :profile,
       :member,
-      :works
+      :works,
+      :photographer_flg,
+      :model_flg,
+      :camera
       )
   end
 end

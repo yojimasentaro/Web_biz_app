@@ -7,6 +7,10 @@
       .media-body
         %h4#top-aligned-media.media-heading
           = @user.username
+          - if @user.photographer_flg
+            %span.glyphicon.glyphicon-camera
+          - if @user.model_flg
+            %span.glyphicon.glyphicon-user
           %span.label.label-default.project-number
             = @user.photos.length
             %i Projects
@@ -22,6 +26,11 @@
             %h4 Works
             %p
               = @user.works
+        .row
+          .col-md-6
+            %h4 Camera
+            %p
+              = @user.camera
 .container.proto-list
   .row
     = render partial: "photos/photo", collection: @user.photos

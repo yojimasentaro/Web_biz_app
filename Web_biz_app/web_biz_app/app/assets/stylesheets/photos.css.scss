@@ -507,6 +507,16 @@ body {
     font-size: 24px;
   }
 
+  .user-label {
+    font-size: 14px;
+	color: gray;
+	font-weight: 400;
+  }
+
+  .user-attribute-checkbox {
+    padding-bottom: 20px;
+  }
+  
   .user-image {
     border: 2px solid #ddd;
     border-radius: 50%;
